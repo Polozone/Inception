@@ -1,0 +1,45 @@
+FROM	debian:buster
+
+# UPDATE & UPGRADE THE SYSTEM
+RUN		apt-get update -y \
+&&		apt-get upgrade -y
+
+# INSTALL NGINX
+RUN		apt-get install -y nginx \
+&&		apt-get install -y openssl
+
+RUN mkdir -p /etc/ssl/certs
+RUN mkdir -p /var/log/nginx
+
+RUN openssl req -newkey rsa:4096 \
+    -x509 \
+    -sha256 \
+    -days 3650 \
+    -nodes \
+    -out /etc/ssl/certs/fullchain.pem \
+    -keyout /etc/ssl/certs/privkey.pem \
+    -subj "/C=FR/ST=Lyon/L=Lyon/O=42/OU=pmulin Department/CN=www.pmulin.42.fr"
+
+COPY /conf/nginx.conf /etc/nginx/sites-available/default
+
+# COPY /conf/index.html /var/www/html/wordpress
+# RUN ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+
+EXPOSE 80
+
+ENTRYPOINT	[ "nginx", "-g", "daemon off;" ]
+# # GENERATE SSL KEY & CERTIFICATE
+# RUN		mkdir -p /etc/nginx/ssl \
+# &&		openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:4096 -keyout /etc/nginx/ssl/pmulin.42.fr.key -out /etc/nginx/ssl/pmulin.42.fr.crt -subj /C=FR
+
+# # CONFIGURE NGINX
+
+# # PORTS
+# EXPOSE	443 9000
+
+# # START
+# #COPY ./entrypoint.sh ./
+
+# #RUN chmod +x entrypoint.sh
+
+# #ENTRYPOINT [ "./entrypoint.sh" ]

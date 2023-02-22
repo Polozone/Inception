@@ -1,0 +1,13 @@
+2023/02/20 09:51:13 [emerg] 1#1: open() "/etc/nginx/sites-enabled/nginc.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:62
+2023/02/20 09:52:14 [emerg] 1#1: open() "/etc/nginx/sites-enabled/nginc.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:62
+2023/02/20 09:52:18 [crit] 1#1: pread() "/etc/nginx/sites-enabled/sites-available" failed (21: Is a directory)
+2023/02/20 09:52:19 [crit] 1#1: pread() "/etc/nginx/sites-enabled/sites-available" failed (21: Is a directory)
+2023/02/20 09:52:19 [crit] 1#1: pread() "/etc/nginx/sites-enabled/sites-available" failed (21: Is a directory)
+2023/02/20 09:52:20 [crit] 1#1: pread() "/etc/nginx/sites-enabled/sites-available" failed (21: Is a directory)
+2023/02/20 09:52:22 [crit] 1#1: pread() "/etc/nginx/sites-enabled/sites-available" failed (21: Is a directory)
+2023/02/20 09:52:24 [crit] 1#1: pread() "/etc/nginx/sites-enabled/sites-available" failed (21: Is a directory)
+2023/02/20 09:52:28 [crit] 1#1: pread() "/etc/nginx/sites-enabled/sites-available" failed (21: Is a directory)
+2023/02/20 09:52:35 [crit] 1#1: pread() "/etc/nginx/sites-enabled/sites-available" failed (21: Is a directory)
+2023/02/20 09:52:48 [crit] 1#1: pread() "/etc/nginx/sites-enabled/sites-available" failed (21: Is a directory)
+2023/02/20 09:53:15 [crit] 1#1: pread() "/etc/nginx/sites-enabled/sites-available" failed (21: Is a directory)
+2023/02/20 09:54:06 [crit] 1#1: pread() "/etc/nginx/sites-enabled/sites-available" failed (21: Is a directory)

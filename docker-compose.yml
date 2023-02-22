@@ -1,0 +1,80 @@
+version: '3.5'
+
+services:
+
+  wordpress:
+    image: mywordpress #specify the img_name in WP directory
+    build: ./wordpress #build option to build image from WP directory
+    volumes:
+        - wordpress_vol:/var/www/html/wordpress
+    environment:
+        - WORDPRESS_DB_NAME
+        - MARIADB_HOST
+        - MYSQL_ROOT_PASSWORD
+        - USERNAME_WP
+        - MARIADB_PWD
+
+    links:
+        - mariadb
+    restart: always
+    ports:
+        - '9000:9000'
+    networks: 
+        - inception
+
+  nginx:
+    image: mynginx
+    build: ./nginx
+    ports:
+        - '80:80'
+    volumes:
+        - wordpress_vol:/var/www/html/wordpress
+    links:
+        - wordpress
+    restart: always
+    networks: 
+        - inception
+
+  mariadb:
+    image: mymariadb
+    build: ./mariadb
+    env_file: .env
+    volumes:
+        - mariadb:/var/lib/mysql
+    restart: always
+    environment:
+        - MARIADB_USER
+        - MYSQL_ROOT_PASSWORD
+        - WORDPRESS_DB_NAME
+        - MARIADB_PWD
+        - ROOT_PWD
+        - USERNAME_WP
+    ports:
+        - '3306:3306'
+    networks: 
+        - inception
+
+volumes:
+    wordpress_vol:
+        driver: local
+        driver_opts:
+            type: 'none'
+            o: 'bind'
+            device: '/home/defaultuser/data/wordpress_vol'
+    db:
+        driver: local
+        driver_opts:
+            type: 'none'
+            o: 'bind'
+            device: '/home/defaultuser/data/database'
+    mariadb:
+        driver: local
+        driver_opts:
+            type: 'none'
+            o: 'bind'
+            device: '/home/defaultuser/data/mariadb'
+    
+networks:
+    inception:
+        name: inception
+        driver: bridge
