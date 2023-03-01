@@ -16,30 +16,14 @@ RUN openssl req -newkey rsa:4096 \
     -sha256 \
     -days 3650 \
     -nodes \
-    -out /etc/ssl/certs/fullchain.pem \
-    -keyout /etc/ssl/certs/privkey.pem \
+    -out /etc/ssl/certs/pmulin.42.fr.crt \
+    -keyout /etc/ssl/certs/pmulin.42.fr.key \
     -subj "/C=FR/ST=Lyon/L=Lyon/O=42/OU=pmulin Department/CN=www.pmulin.42.fr"
 
-COPY /conf/nginx.conf /etc/nginx/sites-available/default
+COPY /conf/nginx.conf /etc/nginx/sites-available/pmulin.42.fr.conf
 
-# COPY /conf/index.html /var/www/html/wordpress
-# RUN ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+RUN ln -s /etc/nginx/sites-available/pmulin.42.fr.conf /etc/nginx/sites-enabled/pmulin.42.fr.conf
 
-EXPOSE 80
+EXPOSE 443
 
-ENTRYPOINT	[ "nginx", "-g", "daemon off;" ]
-# # GENERATE SSL KEY & CERTIFICATE
-# RUN		mkdir -p /etc/nginx/ssl \
-# &&		openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:4096 -keyout /etc/nginx/ssl/pmulin.42.fr.key -out /etc/nginx/ssl/pmulin.42.fr.crt -subj /C=FR
-
-# # CONFIGURE NGINX
-
-# # PORTS
-# EXPOSE	443 9000
-
-# # START
-# #COPY ./entrypoint.sh ./
-
-# #RUN chmod +x entrypoint.sh
-
-# #ENTRYPOINT [ "./entrypoint.sh" ]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]

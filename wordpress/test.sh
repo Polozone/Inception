@@ -1,41 +1,22 @@
 #!/bin/bash
 
-# cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
-# sed -i "s/database_name_here/$WORDPRESS_DB_NAME/" /var/www/html/wordpress/wp-config.php
-# sed -i "s/username_here/$USERNAME_WP/" /var/www/html/wordpress/wp-config.php
-# sed -i "s/password_here/$MYSQL_ROOT_PASSWORD/" /var/www/html/wordpress/wp-config.php
-# sed -i "s/localhost/$WORDPRESS_DB_HOST/" /var/www/html/wordpress/wp-config.php
-
-# php-fpm7.3 -F
-
-#!/bin/bash
-
-#Check if the configuration script is here, if no, wordpress has already been installed
-if [ ! -f "/var/www/wordpress/wp-config.php" ]
+if [ ! -f "/var/www/html/wordpress/wp-config.php" ]
 then
 	while ! mysql -h mariadb --user=${MARIADB_USER} --password=${MARIADB_PWD} -e "SELECT schema_name FROM information_schema.schemata WHERE schema_name='${WORDPRESS_DB_NAME}'"; do
   		echo "Waiting for database to be created..."
   		sleep 5
 	done
 	echo "Starting installation wordpress"
-	#Download Wordpress
 	wp core download --allow-root
-	#Create wp-config.php file
-	wp config create --allow-root --dbname=${WORDPRESS_DB_NAME} --dbuser=${MARIADB_USER} --dbpass=${MARIADB_PWD} --dbhost=${WORDPRESS_DB_HOST} --extra-php --force --skip-check
-	#Install Wordpress and connect it to the database
-	# wp core install --allow-root --url=${WP_URL} --title=${WP_TITLE} --admin_user=${WP_ADMIN_USER} --admin_password=${WP_ADMIN_PWD} --admin_email=${WP_ADMIN_EMAIL}
-	#Create a random user with subscriber role, and get him a new password
-	wp user create --allow-root ${WP_USER} pmulin@gmail.com --role=subscriber
-	wp user update 2 --allow-root --user_pass=${WP_USER_PWD}
-	#Download and install the new wordpress theme
-	wp theme install inspiro --activate --allow-root
+
+	wp config create --dbname=${WORDPRESS_DB_NAME} --dbhost=${DB_HOST} --dbuser=${MARIADB_USER} --dbpass=${MARIADB_PWD} --locale=ro_RO --allow-root
+
+	wp core install --url=${URL_WP} --admin_user=${ADMIN_USER_WP} --admin_password=${ADMIN_PWD_WP} --title=inception --admin_email=${ADMIN_MAIL_WP} --allow-root
+
 	echo "Wordpress successfully installed"
 else
 	echo "No need to install wordpress"
 fi
 
-#Start and stop php-fpm to make sure /run/php directory has been created
 service php7.3-fpm start && service php7.3-fpm stop
-#Launch php-fpm
 php-fpm7.3 -F
-

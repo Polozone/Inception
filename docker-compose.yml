@@ -3,16 +3,22 @@ version: '3.5'
 services:
 
   wordpress:
-    image: mywordpress #specify the img_name in WP directory
+    image: wordpress #specify the img_name in WP directory
     build: ./wordpress #build option to build image from WP directory
     volumes:
         - wordpress_vol:/var/www/html/wordpress
     environment:
-        - WORDPRESS_DB_NAME
+        - MARIADB_USER
+        - MARIADB_PWD
         - MARIADB_HOST
         - MYSQL_ROOT_PASSWORD
+        - DB_HOST
         - USERNAME_WP
-        - MARIADB_PWD
+        - WORDPRESS_DB_NAME
+        - ADMIN_USER_WP
+        - ADMIN_PWD_WP
+        - ADMIN_MAIL_WP
+        - URL_WP
 
     links:
         - mariadb
@@ -23,10 +29,10 @@ services:
         - inception
 
   nginx:
-    image: mynginx
+    image: nginx
     build: ./nginx
     ports:
-        - '80:80'
+        - '443:443'
     volumes:
         - wordpress_vol:/var/www/html/wordpress
     links:
@@ -36,7 +42,7 @@ services:
         - inception
 
   mariadb:
-    image: mymariadb
+    image: mariadb
     build: ./mariadb
     env_file: .env
     volumes:
@@ -47,7 +53,7 @@ services:
         - MYSQL_ROOT_PASSWORD
         - WORDPRESS_DB_NAME
         - MARIADB_PWD
-        - ROOT_PWD
+        - MARIADB_ROOT_PWD
         - USERNAME_WP
     ports:
         - '3306:3306'
@@ -61,18 +67,12 @@ volumes:
             type: 'none'
             o: 'bind'
             device: '/home/defaultuser/data/wordpress_vol'
-    db:
-        driver: local
-        driver_opts:
-            type: 'none'
-            o: 'bind'
-            device: '/home/defaultuser/data/database'
     mariadb:
         driver: local
         driver_opts:
             type: 'none'
             o: 'bind'
-            device: '/home/defaultuser/data/mariadb'
+            device: '/home/defaultuser/data/database'
     
 networks:
     inception:

@@ -1,36 +1,3 @@
-# FROM debian:buster
-
-# RUN apt update -y && \
-#     apt upgrade -y && \
-#     apt install mariadb-server -y
-
-# RUN		apt-get install -y php-fpm php-mysql \
-# &&		service php7.3-fpm start && service php7.3-fpm stop \
-# &&		sed -i "s/\/run\/php\/php7.3-fpm.sock/wordpress:9000/" /etc/php/7.3/fpm/pool.d/www.conf
-
-# RUN apt install mariadb-client -y
-# RUN mkdir -p /var/www/html/wordpress
-# RUN apt-get install php php-mysql php-fpm php-curl php-gd php-intl php-mbstring php-soap php-xml php-xmlrpc php-zip -y
-# RUN apt-get install wget
-# RUN wget -O /tmp/wordpress.tar.gz https://wordpress.org/latest.tar.gz
-# RUN tar -xzvf /tmp/wordpress.tar.gz -C /var/www/html
-# RUN chown -R www-data.www-data /var/www/html/wordpress
-# RUN chmod -R 755 /var/www/html/wordpress
-
-# #installing CLI
-# RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-# RUN chmod +x wp-cli.phar; \
-#  	mv wp-cli.phar /usr/local/bin/wp	
-
-# COPY ./test.sh ./
-
-# RUN chmod +x test.sh
-
-# EXPOSE 9000
-
-# ENTRYPOINT [ "./test.sh" ]
-
-
 FROM debian:buster
 
 RUN apt update -y && \
@@ -48,18 +15,12 @@ RUN chmod +x wp-cli.phar; \
  	mv wp-cli.phar /usr/local/bin/wp
 
 RUN mkdir -p /var/www/html/wordpress
+
 RUN chown -R www-data:www-data /var/www/html/wordpress
 RUN chown www-data:www-data /var/www/html/wordpress
+RUN chmod 755 /var/www/html/wordpress
 
-WORKDIR /www/data/html/wordpress
-# RUN mkdir -p /var/www/html/wordpress
-# RUN apt-get install php php-mysql php-fpm php-curl php-gd php-intl php-mbstring php-soap php-xml php-xmlrpc php-zip -y
-# RUN apt-get install wget
-# RUN wget -O /tmp/wordpress.tar.gz https://wordpress.org/latest.tar.gz
-# RUN tar -xzvf /tmp/wordpress.tar.gz -C /var/www/html
-# RUN chown -R www-data.www-data /var/www/html/wordpress
-# RUN chmod -R 755 /var/www/html/wordpress
-
+WORKDIR /var/www/html/wordpress
 
 COPY ./test.sh ./
 
