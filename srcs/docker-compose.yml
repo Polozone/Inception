@@ -3,18 +3,17 @@ version: '3.5'
 services:
 
   wordpress:
-    image: wordpress #specify the img_name in WP directory
-    build: ./wordpress #build option to build image from WP directory
+    image: wordpress
+    build: ./wordpress
     volumes:
         - wordpress_vol:/var/www/html/wordpress
     environment:
+        - WORDPRESS_DB_NAME
+        - DB_HOST
         - MARIADB_USER
         - MARIADB_PWD
         - MARIADB_HOST
-        - MYSQL_ROOT_PASSWORD
-        - DB_HOST
         - USERNAME_WP
-        - WORDPRESS_DB_NAME
         - ADMIN_USER_WP
         - ADMIN_PWD_WP
         - ADMIN_MAIL_WP
@@ -50,7 +49,6 @@ services:
     restart: always
     environment:
         - MARIADB_USER
-        - MYSQL_ROOT_PASSWORD
         - WORDPRESS_DB_NAME
         - MARIADB_PWD
         - MARIADB_ROOT_PWD
@@ -66,7 +64,7 @@ volumes:
         driver_opts:
             type: 'none'
             o: 'bind'
-            device: '/home/defaultuser/data/wordpress_vol'
+            device: '/home/defaultuser/data/wordpress'
     mariadb:
         driver: local
         driver_opts:
