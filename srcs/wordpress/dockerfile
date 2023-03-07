@@ -22,10 +22,10 @@ RUN chmod 755 /var/www/html/wordpress
 
 WORKDIR /var/www/html/wordpress
 
-COPY ./entrypoint.sh ./
+COPY ./test.sh ./
 
-RUN chmod +x entrypoint.sh
+RUN chmod +x test.sh
 
 EXPOSE 9000
 
-ENTRYPOINT [ "./entrypoint.sh" ]
+ENTRYPOINT [ "./test.sh" ]
