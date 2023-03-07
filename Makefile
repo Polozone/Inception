@@ -18,13 +18,13 @@ ps:
 				$(COMPOSE) ps --all
 
 exec-mariadb:
-	docker exec -it mariadb-container bash
+	docker exec -it srcs-mariadb-1 bash
 
 exec-wp:
-	docker exec -it wp-container bash
+	docker exec -it srcs-wordpress-1 bash
 
 exec-nginx:
-	docker exec -it nginx-container bash
+	docker exec -it srcs-nginx-1 bash
 
 volumes:	
 			test -d /home/$(USER)/data/database || mkdir /home/$(USER)/data/database && \
