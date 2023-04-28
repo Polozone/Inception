@@ -19,8 +19,6 @@ services:
         - ADMIN_MAIL_WP
         - URL_WP
 
-    links:
-        - mariadb
     restart: always
     ports:
         - '9000:9000'
@@ -34,8 +32,6 @@ services:
         - '443:443'
     volumes:
         - wordpress_vol:/var/www/html/wordpress
-    links:
-        - wordpress
     restart: always
     networks: 
         - inception
@@ -76,5 +72,3 @@ networks:
     inception:
         name: inception
         driver: bridge
-
-#tosave2
